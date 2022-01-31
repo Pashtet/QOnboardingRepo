@@ -1,0 +1,5 @@
+SELECT * 
+FROM t1 
+MINUS
+SELECT * 
+FROM t2;
