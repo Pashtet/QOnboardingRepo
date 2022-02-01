@@ -35,12 +35,19 @@ INSERT INTO t (name,year,point) VALUES ('Сережа', 2001, 10);
 INSERT ALL 
     INTO t (name,year,point) values ('Сережа', 2011, 23)
 	INTO t (name,year,point) values ('Паша', 2009, 13)
-	INTO t (name,year,point) values ('Сережа', 2001, 10);
+	INTO t (name,year,point) values ('Сережа', 2001, 10)
+	SELECT * FROM dual;
 	
 --выбор с подзапросом по таблице
 select name, sum(point)
 from t WHERE name = (SELECT name FROM t WHERE year = 2011)
 GROUP BY name;
+
+--выбор с помощью HAVING CASE
+select name, sum(point)
+from t 
+GROUP BY name
+HAVING SUM(CASE WHEN year=2011 then 1 ELSE 0 END)=1;
 
 --выбор с помощью оконной функции
 SELECT name, s FROM (
