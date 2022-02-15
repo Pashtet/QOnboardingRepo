@@ -44,7 +44,7 @@ begin
   a_array_test.DELETE(a_array_test.FIRST);
   display_direct_a_array(a_array_test);
 
-  DBMS_OUTPUT.PUT_LINE('Is element 10 exist in a_array?!');
+  DBMS_OUTPUT.PUT_LINE('Is element 10 exist in a_array?');
   IF a_array_test.EXISTS(10) THEN
     DBMS_OUTPUT.PUT_LINE('YES!');
   ELSE
@@ -65,4 +65,17 @@ begin
   DBMS_OUTPUT.PUT_LINE('Display number of elements a_array: ' ||
                        a_array_test.COUNT);
 
+  DBMS_OUTPUT.PUT_LINE('Add first element 10 in a_array');
+  a_array_test(a_array_test.FIRST - 1) := 10;
+  display_direct_a_array(a_array_test);
+  
+    DBMS_OUTPUT.PUT_LINE('Add last element 1 in a_array');
+  a_array_test(a_array_test.LAST + 1) := 1;
+  display_direct_a_array(a_array_test);
+  
+  -- TRIM only to nested table or VARRAY
+ /* DBMS_OUTPUT.PUT_LINE('Trim a_array');
+  a_array_test.TRIM;
+  display_direct_a_array(a_array_test);*/
+  
 end;
