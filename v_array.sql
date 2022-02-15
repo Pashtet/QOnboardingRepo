@@ -1,9 +1,29 @@
--- Created on 14.02.2022 by P.TROFIMOV 
 -- работа с varray
 declare
-
-  v_array_test pt_work_with_v_array.v_array := pt_work_with_v_array.v_array();
+  TYPE v_array IS VARRAY(10) of PLS_INTEGER;
+  v_array_test v_array := v_array();
   i            PLS_INTEGER;
+
+  PROCEDURE display_direct_v_array(in_v_array IN v_array) IS
+  BEGIN
+    DBMS_OUTPUT.PUT_LINE('Display direct v_array');
+    i := in_v_array.FIRST;
+    WHILE (i IS NOT NULL) LOOP
+      DBMS_OUTPUT.PUT_LINE(in_v_array(i));
+      i := in_v_array.NEXT(i);
+    END LOOP;
+  END display_direct_v_array;
+
+  PROCEDURE display_reverse_v_array(in_v_array IN v_array) IS
+  BEGIN
+    DBMS_OUTPUT.PUT_LINE('Display reverse v_array');
+    i := in_v_array.LAST;
+    WHILE (i IS NOT NULL) LOOP
+      DBMS_OUTPUT.PUT_LINE(in_v_array(i));
+      i := in_v_array.PRIOR(i);
+    END LOOP;
+  END display_reverse_v_array;
+
 begin
 
   DBMS_OUTPUT.PUT_LINE('Create v_array from 1 to 10.');
@@ -13,8 +33,8 @@ begin
     v_array_test(i) := i;
   END LOOP;
 
-  pt_work_with_v_array.display_direct_v_array(v_array_test);
-  pt_work_with_v_array.display_reverse_v_array(v_array_test);
+  display_direct_v_array(v_array_test);
+ display_reverse_v_array(v_array_test);
 
   DBMS_OUTPUT.PUT_LINE('Display number of elements v_array: ' ||
                        v_array_test.COUNT);
@@ -37,7 +57,7 @@ begin
 
   DBMS_OUTPUT.PUT_LINE('TRIM last element in v_array');
   v_array_test.TRIM;
-  pt_work_with_v_array.display_direct_v_array(v_array_test);
+  display_direct_v_array(v_array_test);
 
   --добавить новый элемент можно только в конец с EXTEND, если не превысили количество возможных элементов
   DBMS_OUTPUT.PUT_LINE('Add last element 1 with EXTEND in v_array');
@@ -47,7 +67,7 @@ begin
   ELSE
     DBMS_OUTPUT.PUT_LINE('COUNT = LIMIT');
   END IF;
-  pt_work_with_v_array.display_direct_v_array(v_array_test);
+  display_direct_v_array(v_array_test);
 
   DBMS_OUTPUT.PUT_LINE('Try add element with element number > LIMIT in v_array');
   IF v_array_test.LIMIT > v_array_test.COUNT THEN
@@ -56,54 +76,6 @@ begin
   ELSE
     DBMS_OUTPUT.PUT_LINE('COUNT = LIMIT');
   END IF;
-  pt_work_with_v_array.display_direct_v_array(v_array_test);
+ display_direct_v_array(v_array_test);
 
 end;
-
-
-create or replace package pt_work_with_v_array is
-
-  -- Author  : P.TROFIMOV
-  -- Created : 14.02.2022 12:32:46
-  -- Purpose : work with varray
-
-  TYPE v_array IS VARRAY(10) of PLS_INTEGER;
-
-  PROCEDURE display_direct_v_array(in_v_array IN v_array);
-  PROCEDURE display_reverse_v_array(in_v_array IN v_array);
-
-end pt_work_with_v_array;
-
-create or replace package body pt_work_with_v_array is
-
-  PROCEDURE display_direct_v_array(in_v_array IN v_array) IS
-  
-    i PLS_INTEGER;
-  
-  BEGIN
-  
-    DBMS_OUTPUT.PUT_LINE('Display direct v_array');
-    i := in_v_array.FIRST;
-    WHILE (i IS NOT NULL) LOOP
-      DBMS_OUTPUT.PUT_LINE(in_v_array(i));
-      i := in_v_array.NEXT(i);
-    END LOOP;
-  
-  END display_direct_v_array;
-
-  PROCEDURE display_reverse_v_array(in_v_array IN v_array) IS
-  
-    i PLS_INTEGER;
-  
-  BEGIN
-  
-    DBMS_OUTPUT.PUT_LINE('Display reverse v_array');
-    i := in_v_array.LAST;
-    WHILE (i IS NOT NULL) LOOP
-      DBMS_OUTPUT.PUT_LINE(in_v_array(i));
-      i := in_v_array.PRIOR(i);
-    END LOOP;
-  
-  END display_reverse_v_array;
-
-end pt_work_with_v_array;
